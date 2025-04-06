@@ -152,6 +152,8 @@ services:
     depends_on:
       appflowy_cloud:
         condition: service_started
+    ports:
+      - 3000:3000
 
   ai:
     container_name: appflowy-ai
@@ -203,3 +205,5 @@ services:
     environment:
       - AF_BASE_URL=${APPFLOWY_BASE_URL:?err}
       - AF_GOTRUE_URL=${API_EXTERNAL_URL}
+    ports:
+      - 9999:9999
