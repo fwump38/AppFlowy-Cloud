@@ -41,9 +41,6 @@ services:
   gotrue:
     container_name: appflowy-auth
     restart: on-failure
-    build:
-      context: docker/gotrue
-      dockerfile: Dockerfile
     depends_on:
       postgres:
         condition: service_healthy
@@ -137,11 +134,6 @@ services:
       - AI_OPENAI_API_KEY=${AI_OPENAI_API_KEY}
       - APPFLOWY_ADMIN_FRONTEND_PATH_PREFIX=${ADMIN_FRONTEND_PATH_PREFIX}
       - APPFLOWY_WEB_URL=${APPFLOWY_WEB_URL}
-    build:
-      context: .
-      dockerfile: Dockerfile
-      args:
-        FEATURES: ""
     image: appflowyinc/appflowy_cloud:${APPFLOWY_CLOUD_VERSION:-latest}
     depends_on:
       gotrue:
@@ -150,9 +142,6 @@ services:
   admin_frontend:
     container_name: appflowy-admin
     restart: on-failure
-    build:
-      context: .
-      dockerfile: ./admin_frontend/Dockerfile
     image: appflowyinc/admin_frontend:${APPFLOWY_ADMIN_FRONTEND_VERSION:-latest}
     environment:
       - RUST_LOG=${RUST_LOG:-info}
@@ -181,9 +170,6 @@ services:
     container_name: appflowy-worker
     restart: on-failure
     image: appflowyinc/appflowy_worker:${APPFLOWY_WORKER_VERSION:-latest}
-    build:
-      context: .
-      dockerfile: ./services/appflowy-worker/Dockerfile
     environment:
       - RUST_LOG=${RUST_LOG:-info}
       - APPFLOWY_ENVIRONMENT=production
